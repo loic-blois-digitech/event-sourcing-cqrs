@@ -1,7 +1,12 @@
 package com.example.eventsourcingcqrs.aggregate;
 
 import com.example.eventsourcingcqrs.aggregate.event.AccountCreatedEvent;
+import com.example.eventsourcingcqrs.aggregate.event.MoneyCreditedEvent;
+import com.example.eventsourcingcqrs.aggregate.event.MoneyDebitedEvent;
 import com.example.eventsourcingcqrs.aggregate.target.CreateAccountCommand;
+import com.example.eventsourcingcqrs.aggregate.target.CreditMoneyCommand;
+import com.example.eventsourcingcqrs.aggregate.target.DebitMoneyCommand;
+import com.example.eventsourcingcqrs.exception.InsufficientBalanceException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,11 +34,11 @@ public class BankAccountAggregate implements Serializable {
     @CommandHandler
     public BankAccountAggregate(CreateAccountCommand command) {
         AggregateLifecycle.apply(
-          new AccountCreatedEvent(
-                  command.getAccountId(),
-                  command.getInitialBalance(),
-                  command.getOwner()
-          )
+                new AccountCreatedEvent(
+                        command.getAccountId(),
+                        command.getInitialBalance(),
+                        command.getOwner()
+                )
         );
     }
 
@@ -42,5 +47,38 @@ public class BankAccountAggregate implements Serializable {
         this.id = event.getId();
         this.owner = event.getOwner();
         this.balance = event.getInitialBalance();
+    }
+
+    @CommandHandler
+    public void handle(CreditMoneyCommand command) {
+        AggregateLifecycle.apply(
+                new MoneyCreditedEvent(
+                        command.getAccountId(),
+                        command.getCreditAmount()
+                )
+        );
+    }
+
+    @EventSourcingHandler
+    public void on(MoneyCreditedEvent event) {
+        this.id = event.getId();
+        this.balance = this.balance.add(event.getCreditAmount());
+    }
+
+    @CommandHandler
+    public void handle(DebitMoneyCommand command) {
+        AggregateLifecycle.apply(
+                new MoneyDebitedEvent(
+                        command.getAccountId(),
+                        command.getDebitAmount()
+                )
+        );
+    }
+
+    @EventSourcingHandler
+    public void on(MoneyDebitedEvent event) throws InsufficientBalanceException {
+        if (this.balance.compareTo(event.getDebitAmount()) < 0) {
+            throw new InsufficientBalanceException(event.getId(), event.getDebitAmount());
+        }
     }
 }
