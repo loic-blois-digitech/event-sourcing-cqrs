@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 @Data
 @AllArgsConstructor
-public class AccountAggregate {
+public class BankAccountAggregate {
     private String accountId;
     private BigDecimal balance;
     private String status;
