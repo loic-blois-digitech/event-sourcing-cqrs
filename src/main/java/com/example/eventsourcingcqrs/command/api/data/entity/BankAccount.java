@@ -1,23 +1,21 @@
-package com.example.eventsourcingcqrs.entity;
+package com.example.eventsourcingcqrs.command.api.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+/**
+ * @author l.blois
+ */
 @Entity
+@Data
 public class BankAccount implements Serializable {
 
     @Id
-    private UUID id;
-    private String owner;
+    private String accountId;
     private BigDecimal balance;
+    private String status;
 }

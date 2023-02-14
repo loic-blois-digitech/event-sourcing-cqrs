@@ -1,10 +1,10 @@
 package com.example.eventsourcingcqrs.exception;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
-public class InsufficientBalanceException extends Throwable {
-    public InsufficientBalanceException(UUID accountId, BigDecimal debitAmount) {
-        super("Insufficient balance: Cannot debit " + debitAmount + " from account number [" + accountId.toString() + "]");
+public class InsufficientBalanceException extends RuntimeException {
+
+    public InsufficientBalanceException(String id, BigDecimal amount) {
+        super("Solde insuffisant : impossible d'effectuer un retrait de " + amount + " sur le compte bancaire n° [" + id + "]");
     }
 }

@@ -1,0 +1,76 @@
+<configuration>
+
+    <property name="PATTERN_LOG_CONSOLE"
+              value="%d{dd-MM-yyyy HH:mm:ss.SSS} %cyan([%thread]) %highlight(%-5level) %logger.%M - %msg%n"
+    />
+    <property name="PATTERN_LOG_FILE"
+              value="%d{dd-MM-yyyy HH:mm:ss.SSS} %([%thread]) %-5level %logger.%M - %msg%n"
+    />
+
+    <!-- Affichage des logs dans la console en mode dev -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${PATTERN_LOG_CONSOLE}
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!-- Chargement des logs côté back dans un fichier -->
+    <appender name="BACK-FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/event-sourcing-back.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/evelin.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- chaque fichier archivé, taille max 10 Mo -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- taille totale de tous les fichiers d'archive, si la taille totale> 20 Go, il supprimera l'ancien fichier archivé -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- 60 jours pour conserver -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN_LOG_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Chargement des logs côté front dans un fichier -->
+    <appender name="FRONT-FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/event-sourcing-front.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/evelin-front.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- chaque fichier archivé, taille max 10 Mo -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- taille totale de tous les fichiers d'archive, si la taille totale> 20 Go, il supprimera l'ancien fichier archivé -->
+            <totalSizeCap>20GB</totalSizeCap>
+            <!-- 60 jours pour conserver -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN_LOG_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Affichage des logs dans la console en mode dev -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${PATTERN_LOG_CONSOLE}
+            </Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.example.eventsourcingcqrs" level="debug" additivity="false">
+        <appender-ref ref="BACK-FILE-ROLLING"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="BACK-FILE-ROLLING"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
