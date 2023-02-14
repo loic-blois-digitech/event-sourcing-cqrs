@@ -1,4 +1,4 @@
-package com.example.eventsourcingcqrs.query.controller;
+package com.example.eventsourcingcqrs.query.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

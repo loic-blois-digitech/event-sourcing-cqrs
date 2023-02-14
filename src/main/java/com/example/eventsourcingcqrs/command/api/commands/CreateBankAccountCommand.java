@@ -1,15 +1,15 @@
-package com.example.eventsourcingcqrs.event;
+package com.example.eventsourcingcqrs.command.api.commands;
 
 import java.math.BigDecimal;
 
 /**
  * @author l.blois
  */
-public class BankAccountCreatedEvent extends BaseEvent<String> {
+public class CreateBankAccountCommand extends BaseCommand<String> {
 
     private final BigDecimal balance;
 
-    public BankAccountCreatedEvent(String id, BigDecimal balance) {
+    public CreateBankAccountCommand(String id, BigDecimal balance) {
         super(id);
         this.balance = balance;
     }

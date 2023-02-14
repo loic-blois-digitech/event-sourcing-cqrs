@@ -1,10 +1,11 @@
 package com.example.eventsourcingcqrs.event;
 
 /**
- * @author l.blois
  * @param <T>
+ * @author l.blois
  */
 public class BaseEvent<T> {
+
     private final T id;
 
     public BaseEvent(T id) {
@@ -14,5 +15,4 @@ public class BaseEvent<T> {
     public T getId() {
         return id;
     }
-
 }

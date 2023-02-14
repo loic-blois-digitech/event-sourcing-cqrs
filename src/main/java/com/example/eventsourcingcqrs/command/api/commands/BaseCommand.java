@@ -1,9 +1,12 @@
-package com.example.eventsourcingcqrs.command.command;
+package com.example.eventsourcingcqrs.command.api.commands;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 /**
  * @author l.blois
- */
+ **/
 public class BaseCommand<T> {
+
+    @TargetAggregateIdentifier
     private final T id;
 
     public BaseCommand(T id) {
@@ -14,3 +17,4 @@ public class BaseCommand<T> {
         return id;
     }
 }
+

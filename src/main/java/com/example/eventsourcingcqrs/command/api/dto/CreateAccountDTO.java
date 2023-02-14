@@ -1,4 +1,4 @@
-package com.example.eventsourcingcqrs.command.dto;
+package com.example.eventsourcingcqrs.command.api.dto;
 
 import lombok.Data;
 

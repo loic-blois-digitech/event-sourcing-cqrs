@@ -1,8 +1,8 @@
 package com.example.eventsourcingcqrs.exception;
 
-public class AccountFoundException extends Throwable {
+public class AccountFoundException extends RuntimeException {
 
     public AccountFoundException(String id) {
-        super("Bank account number " + id + " already exists");
+        super("Le numéro de compte bancaire " + id + " existe déjà");
     }
 }
